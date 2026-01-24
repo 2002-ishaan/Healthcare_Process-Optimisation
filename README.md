@@ -1,6 +1,6 @@
 # NTH Project - Data Analysis & Dashboard
 
-Developed a process mining tool leveraging predictive models across 16,011 emergency department visits, delivered via a 5-page Streamlit dashboard, enabling clinicians to reduce wait times by 15–23 minutes and flag 53% of at-risk patients.
+Developed a process mining tool leveraging predictive models across 16,011 emergency department visits, delivered via a 5-page interactive Streamlit dashboard, enabling clinicians to reduce wait times by 15–23 minutes and flag 53% of at-risk patients.
 
 ## 🖼️ Dashboard Preview
 
