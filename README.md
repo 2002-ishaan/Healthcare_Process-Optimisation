@@ -1,6 +1,12 @@
 # NTH Project - Data Analysis & Dashboard
 
-A comprehensive data analysis project with an interactive Streamlit dashboard for visualizing and exploring NTH (New Technology Horizon) metrics and insights.
+Developed a process mining tool leveraging predictive models across 16,011 emergency department visits, delivered via a 5-page interactive Streamlit dashboard, enabling clinicians to reduce wait times by 15–23 minutes and flag 53% of at-risk patients.
+
+## 🖼️ Dashboard Preview
+
+![NTH-ED Dashboard](images/dashboard_screenshot.png)
+
+*The interactive dashboard showing Executive Dashboard with key metrics, zone performance, acuity distribution, and arrival patterns for Emergency Department triage decision support.*
 
 ## 📋 Table of Contents
 
@@ -19,43 +25,73 @@ A comprehensive data analysis project with an interactive Streamlit dashboard fo
 
 ## 🎯 Overview
 
-The NTH Project provides end-to-end data processing and visualization capabilities for analyzing technology trends and metrics. The project includes:
+The NTH-ED (Emergency Department) Triage Decision Support project provides end-to-end data processing and visualization capabilities for analyzing emergency department performance metrics. The project includes:
 
-- Automated data ingestion and preprocessing
+- **Process Mining & Predictive Analytics** for Emergency Department operations
+- Automated data ingestion and preprocessing of event logs
 - Feature engineering and transformation pipelines
-- Interactive Streamlit dashboard for data exploration
-- Comprehensive visualizations and analytics
+- Interactive Streamlit dashboard with multiple analytical views
+- Real-time monitoring of key performance indicators (KPIs)
+
+**Key Metrics Tracked:**
+- Total Visits and Patient Volume
+- Median PIA (Patient Intake Assessment time)
+- LWBS Rate (Left Without Being Seen)
+- Admission Rate
+- Ambulance Utilization
+- Zone Performance across different ED areas
+- Acuity Distribution (CTAS levels 1-5)
+- Arrival Patterns by Hour
 
 ## ✨ Features
 
-- **Data Processing Pipeline**: Automated ETL workflows for cleaning and transforming raw data
-- **Interactive Dashboard**: Real-time data exploration with Streamlit
-- **Advanced Analytics**: Statistical analysis and trend identification
-- **Visualization Suite**: Multiple chart types including time series, distributions, and correlations
+- **Event Log Upload**: Drag-and-drop interface for uploading ED event logs (CSV format)
+- **Executive Dashboard**: High-level KPI overview with key metrics at a glance
+- **Process Map Visualization**: Interactive process flow analysis
+- **Conformance Checking**: Validate processes against standard protocols
+- **Queue Analysis**: Detailed waiting time and queue length analytics
+- **Predictive Models**: Machine learning predictions for patient flow
+- **Anomaly Detection**: Identify unusual patterns in ED operations
+- **Causality Analysis**: Root cause analysis for performance issues
+- **Zone Performance Tracking**: Compare performance across ED zones (YZ, GZ, A, EPZ, SA)
+- **Acuity Distribution**: Monitor CTAS (Canadian Triage and Acuity Scale) levels
+- **Arrival Pattern Analysis**: Hourly arrival trends with median PIA overlay
 - **Export Capabilities**: Download processed data and reports
 - **Responsive Design**: Works on desktop and tablet devices
 
 ## 📁 Project Structure
 
 ```
-nth-project/
+nth-ed-project/
 ├── data/
-│   ├── raw/                 # Raw input data files
+│   ├── raw/                 # Raw event log files
 │   ├── processed/           # Cleaned and processed data
 │   └── output/              # Generated reports and exports
 ├── src/
 │   ├── preprocessing/       # Data cleaning and transformation scripts
+│   ├── process_mining/      # Process discovery and conformance
 │   ├── analysis/            # Statistical analysis modules
+│   ├── predictions/         # ML models for predictive analytics
 │   ├── visualization/       # Plotting and chart generation
 │   └── utils/               # Helper functions and utilities
 ├── dashboard/
 │   ├── app.py               # Main Streamlit application
 │   ├── components/          # Dashboard UI components
+│   │   ├── overview.py      # Executive dashboard
+│   │   ├── process_map.py   # Process mining visualizations
+│   │   ├── conformance.py   # Conformance checking
+│   │   ├── queue.py         # Queue analysis
+│   │   ├── predictions.py   # Predictive models view
+│   │   ├── anomalies.py     # Anomaly detection
+│   │   └── causality.py     # Causality analysis
 │   └── styles/              # CSS and styling files
+├── models/                  # Trained ML models
 ├── notebooks/               # Jupyter notebooks for exploration
 ├── tests/                   # Unit and integration tests
 ├── config/
 │   └── config.yaml          # Configuration settings
+├── images/
+│   └── dashboard_screenshot.png  # Dashboard preview image
 ├── requirements.txt         # Python dependencies
 ├── environment.yml          # Conda environment specification
 ├── .gitignore
@@ -85,6 +121,8 @@ Before you begin, ensure you have the following installed:
 git clone https://github.com/your-username/nth-project.git
 cd nth-project
 ```
+
+**Note:** Make sure the `images/` folder contains the `dashboard_screenshot.png` file for the README to display the preview image correctly.
 
 ### Step 2: Create Virtual Environment
 
@@ -164,12 +202,31 @@ analysis:
 
 ### 3. Prepare Data Files
 
-Place your input data files in the `data/raw/` directory. Supported formats:
+Place your event log files in the `data/raw/` directory. 
 
-- CSV (`.csv`)
+**Required Event Log Format (CSV):**
+The event log should contain the following columns:
+- `case_id`: Unique patient visit identifier
+- `activity`: Activity/event name (e.g., Registration, Triage, Assessment)
+- `timestamp`: Date and time of the event
+- `resource`: Staff member or resource involved
+- Additional columns: zone, acuity (CTAS level), arrival_mode, etc.
+
+**Example:**
+```csv
+case_id,activity,timestamp,resource,zone,acuity
+12345,Registration,2024-01-15 08:30:00,Nurse_A,YZ,3
+12345,Triage,2024-01-15 08:35:00,Nurse_B,YZ,3
+12345,Assessment,2024-01-15 08:50:00,Doctor_C,YZ,3
+```
+
+Supported formats:
+- CSV (`.csv`) - **Primary format**
 - Excel (`.xlsx`, `.xls`)
 - JSON (`.json`)
 - Parquet (`.parquet`)
+
+**File Size Limit:** 200MB per file (as shown in dashboard upload interface)
 
 ## 🏃 Running the Application
 
@@ -216,83 +273,149 @@ When you first run the application:
 
 ### Dashboard Navigation
 
-1. **Data Upload Section**: Upload new data files or select from existing datasets
-2. **Filter Panel**: Apply date ranges, metrics, and category filters
-3. **Visualization Tabs**: 
-   - Overview: Key metrics and summary statistics
-   - Time Series: Trend analysis over time
-   - Comparisons: Side-by-side metric comparisons
-   - Distributions: Statistical distributions and histograms
-   - Correlations: Relationship analysis between variables
-4. **Export Options**: Download filtered data, charts, or reports
+The sidebar contains the following sections:
+
+1. **NTH-ED Decision Support**: Home navigation
+2. **Upload Event Log**: Drag-and-drop interface for uploading ED event logs (Limit: 200MB per file, CSV format)
+3. **Navigate**: Main menu with the following pages
+   - 🏠 **Overview**: Executive dashboard with key metrics
+   - 🗺️ **Process Map**: Visualize patient flow through the ED
+   - ✅ **Conformance**: Check adherence to standard protocols
+   - ⏱️ **Queue Analysis**: Analyze waiting times and queue lengths
+   - 🔮 **Predictions**: ML-based predictions for patient flow
+   - 🚨 **Anomalies**: Detect unusual patterns
+   - 🔍 **Causality**: Root cause analysis
+4. **Filters**: Apply CTAS level filters and other criteria
+
+### Dashboard Views Explained
+
+**Executive Dashboard (Overview)**
+- **Key Metrics Cards**: Total Visits, Median PIA, LWBS Rate, Admission Rate, Ambulance %
+- **Zone Performance**: Bar chart showing visit volumes across ED zones (YZ, GZ, A, EPZ, SA)
+  - Color-coded by median PIA (green = faster, red = slower)
+- **Acuity Distribution**: Pie chart showing patient distribution by CTAS levels (1-5)
+  - CTAS 1: Resuscitation (most urgent)
+  - CTAS 2: Emergent
+  - CTAS 3: Urgent
+  - CTAS 4: Less urgent
+  - CTAS 5: Non-urgent
+- **Arrival Patterns by Hour**: Combined bar and line chart
+  - Blue bars: Number of arrivals per hour
+  - Red line: Median PIA over time
 
 ### Common Workflows
 
-**Workflow 1: Analyze New Data**
+**Workflow 1: Analyze New Event Log**
 
-1. Click "Upload Data" in the sidebar
-2. Select your CSV/Excel file
-3. Wait for preprocessing to complete
-4. Explore visualizations in different tabs
-5. Export results if needed
+1. Click "Upload Event Log" in the sidebar
+2. Drag and drop your CSV file or click "Browse files"
+3. Wait for the file to upload and process
+4. Green checkmark will appear: "✅ Data & Models Loaded"
+5. Navigate to "Overview" to see executive dashboard
+6. Explore other pages for detailed analysis
 
-**Workflow 2: Compare Time Periods**
+**Workflow 2: Monitor ED Performance**
 
-1. Use the date range selector in the sidebar
-2. Select "Time Series" tab
-3. Choose metrics to compare
-4. Adjust aggregation level (daily/weekly/monthly)
-5. Download comparison report
+1. Go to "Overview" page
+2. Review key metrics at the top
+3. Identify bottleneck zones in "Zone Performance" chart
+4. Check acuity distribution for patient mix
+5. Analyze "Arrival Patterns by Hour" for staffing optimization
 
-**Workflow 3: Generate Reports**
+**Workflow 3: Process Mining Analysis**
 
-1. Apply desired filters
-2. Navigate to "Export" section
-3. Select report type (PDF/Excel/CSV)
-4. Click "Generate Report"
-5. Download from the link provided
+1. Navigate to "Process Map"
+2. View patient flow visualization
+3. Go to "Conformance" to check protocol adherence
+4. Identify deviations and delays
+5. Use "Causality" to find root causes
+
+**Workflow 4: Predictive Analytics**
+
+1. Upload current event log
+2. Navigate to "Predictions" page
+3. Review forecasted patient volumes
+4. Check predicted waiting times
+5. Use insights for resource planning
+
+**Workflow 5: Anomaly Detection**
+
+1. Go to "Anomalies" page
+2. Review flagged unusual patterns
+3. Investigate specific cases
+4. Document findings for quality improvement
 
 ## 🔄 Data Pipeline
 
-The project follows a structured data pipeline:
+The project follows a structured data pipeline for processing Emergency Department event logs:
 
 ### 1. Data Ingestion
 
 ```python
 # Located in src/preprocessing/ingest.py
-- Load raw data from multiple sources
-- Validate data schema and types
+- Load event log CSV from upload interface
+- Validate required columns (case_id, activity, timestamp)
+- Parse timestamp formats
 - Handle missing or malformed records
+- Create case IDs if not present
 ```
 
 ### 2. Preprocessing
 
 ```python
 # Located in src/preprocessing/clean.py
-- Remove duplicates
-- Handle missing values
-- Standardize date formats
-- Normalize numerical columns
-- Encode categorical variables
+- Remove duplicate events
+- Handle missing timestamps
+- Standardize activity names
+- Clean resource identifiers
+- Filter incomplete cases
+- Sort events chronologically
 ```
 
 ### 3. Feature Engineering
 
 ```python
 # Located in src/preprocessing/features.py
-- Create derived metrics
-- Calculate rolling averages
-- Generate time-based features
-- Aggregate data at different levels
+- Calculate Patient Intake Assessment (PIA) time
+- Compute time between activities
+- Extract hour/day/week features
+- Calculate zone-based metrics
+- Aggregate CTAS level statistics
+- Derive LWBS (Left Without Being Seen) flags
+- Calculate admission indicators
+- Identify ambulance arrivals
 ```
 
-### 4. Analysis & Visualization
+### 4. Process Mining
+
+```python
+# Located in src/process_mining/
+- Discover process models from event logs
+- Calculate process variants
+- Identify bottlenecks
+- Detect deviations from standard protocols
+- Generate process maps
+```
+
+### 5. Predictive Modeling
+
+```python
+# Located in src/predictions/
+- Train ML models on historical data
+- Predict patient volumes
+- Forecast waiting times
+- Estimate LWBS probability
+- Generate resource recommendations
+```
+
+### 6. Visualization & Dashboard
 
 ```python
 # Dashboard components dynamically load processed data
 - Real-time metric calculations
-- Interactive plotting with Plotly
+- Interactive plotting with Plotly/Altair
 - Caching for performance optimization
+- Responsive updates on filter changes
 ```
 
 ## 🛠️ Troubleshooting
