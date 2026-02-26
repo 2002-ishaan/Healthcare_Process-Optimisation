@@ -1,6 +1,20 @@
 # NTH Project - Data Analysis & Dashboard
 
+<div align="center">
+
 Developed a process mining tool leveraging predictive models across 16,011 emergency department visits, delivered via a 5-page interactive Streamlit dashboard, enabling clinicians to reduce wait times by 15–23 minutes and flag 53% of at-risk patients.
+
+---
+
+## 🚀 [**VIEW LIVE DASHBOARD →**](https://healthcareprocess-optimisation-n4ba7cms53ffmvbg2zywxn.streamlit.app/)
+
+**[https://healthcareprocess-optimisation-n4ba7cms53ffmvbg2zywxn.streamlit.app/](https://healthcareprocess-optimisation-n4ba7cms53ffmvbg2zywxn.streamlit.app/)**
+
+*Process Mining · ML Risk Predictions · Queue Analysis · Anomaly Detection · Causal Insights*
+
+---
+
+</div>
 
 ## 🖼️ Dashboard Preview
 
@@ -202,7 +216,7 @@ analysis:
 
 ### 3. Prepare Data Files
 
-Place your event log files in the `data/raw/` directory. 
+Place your event log files in the `data/raw/` directory.
 
 **Required Event Log Format (CSV):**
 The event log should contain the following columns:
